@@ -1,6 +1,6 @@
 
 
-# this code will make a scatter plot with each graphed on a log-scale axis
+# this code will make a scatter plot with the y-variable graphed on a log-scale axis
 
 ggplot(
   data = ___, 
