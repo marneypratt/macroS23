@@ -126,12 +126,14 @@ df.sum
 Find the code you need to visualize (=graph) your data by looking in the "graphing" folder within the "script_templates" folder. Copy and paste the code you need in the chunk below.
 
 ```{r}
-#| label: graphs
+#| label: graph
 
 
 ```
 
 To save your graph with the `ggsave()` function, you need to name the resulting file with surrounding " ", and indicate the size via height, width, and units. Don't forget to save the graph with a dpi call at 300-500 to make it nice and crisp! Look at the `ggsave()` help file for more information and options.
+
+Note that the code below will save the most recent graph made in the "images" folder (make sure to replace the underlined part with a name for your graph file that will help you find the file again later)
 
 ```{r}
 #| label: Save your graph
