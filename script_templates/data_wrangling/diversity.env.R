@@ -8,21 +8,19 @@ macro.long <- macros %>%
   
   #join taxa info
   left_join(., master.taxa) %>%
-  
-  dplyr::filter(!is.na(number)) %>% 
-  dplyr::select(sampleID, organism_aggr, number) %>% 
-  group_by(sampleID, organism_aggr) %>% 
-  dplyr::summarise(num = sum(number))
 
+  dplyr::filter(!is.na(invDens), year !="2018") %>% 
+  dplyr::select(sampleID, organism_aggr, invDens) %>% 
+  group_by(sampleID, organism_aggr) %>% 
+  dplyr::summarise(density = sum(invDens))
 
 # convert to wide format
 macro.wide <- macro.long %>% 
   pivot_wider(names_from = organism_aggr, 
-              values_from = num,
-              values_fill = list(num = 0),
-              values_fn = list(num = mean)) %>%
+              values_from = density,
+              values_fill = list(density = 0),
+              values_fn = list(density = sum)) %>%
   tibble::column_to_rownames("sampleID")
-
 
 #Calculate diversity index values
 
@@ -67,7 +65,7 @@ variables <- macros %>%
                     mon.ADD = round(mean(mon.ADD, na.rm=TRUE), digits=0),
                     mon.precip = round(mean(mon.precip, na.rm=TRUE), digits=0),
                     
-                    # replace the blanks below with your water quality variable of interest
+                    # replace the blanks below with your water quality variables of interest
                     ___ = mean(___, na.rm = TRUE)) 
 
 #this script takes the macro.div and joins it with the mydf one we just created

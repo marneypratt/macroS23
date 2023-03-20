@@ -9,18 +9,18 @@ macro.long <- macros %>%
   #join taxa info
   left_join(., master.taxa) %>%
   
-  dplyr::filter(!is.na(number)) %>% 
-  dplyr::select(sampleID, organism_aggr, number) %>% 
+  dplyr::filter(!is.na(invDens), year !="2018") %>% 
+  dplyr::select(sampleID, organism_aggr, invDens) %>% 
   group_by(sampleID, organism_aggr) %>% 
-  dplyr::summarise(num = sum(number))
+  dplyr::summarise(density = sum(invDens))
 
 
 # convert to wide format
 macro.wide <- macro.long %>% 
   pivot_wider(names_from = organism_aggr, 
-              values_from = num,
-              values_fill = list(num = 0),
-              values_fn = list(num = mean)) %>%
+              values_from = density,
+              values_fill = list(density = 0),
+              values_fn = list(density = sum)) %>%
   tibble::column_to_rownames("sampleID")
 
 
