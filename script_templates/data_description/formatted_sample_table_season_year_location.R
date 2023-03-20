@@ -36,13 +36,12 @@ ft <- merge_v(ft, j = ~ season + year)
 #set table properties
 ft <- set_table_properties(ft, layout = "autofit", width = 1)
 
-#center columns
-ft <- align(ft, align = "center", part = "all" )
-
-
 #add lines between year x season
 ft <- theme_vanilla(ft) %>% 
   fontsize(size = 10)
+
+#center columns
+ft <- align(ft, align = "center", part = "all" )
 
 ft <- fix_border_issues(ft)
 
