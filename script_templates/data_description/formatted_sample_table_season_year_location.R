@@ -3,6 +3,7 @@
 #Use additional code to create the summary table called "table.sum"
 #If you want to format the table yourself, then don't use this code
 
+#see https://davidgohel.github.io/flextable/ for more information and formatting options
 
 #create the formatted table
 ft <- flextable(table.sum)
@@ -17,6 +18,15 @@ ft <- set_header_labels(ft,
                         area = "Total Area Sampled (m^2)"
                         )
 
+#format superscript
+ft <- compose( 
+  ft, j = "area", part="header",
+  value = as_paragraph(
+    "Total Area Sampled (m", 
+    as_sup("2"),
+    ")"
+  )
+)
 
 #bold the headings
 ft <- bold(ft, part="header")
@@ -37,11 +47,8 @@ ft <- theme_vanilla(ft) %>%
 ft <- fix_border_issues(ft)
 
 #print the table
-#comment out or delete the line below before you render a quarto document
+#right click on the table, choose select all, 
+#choose copy, then paste in your document
+#finish formatting as needed in your document
 ft
 
-#send to MS Word if desired
-#comment out or delete the line below before you render a quarto document
-print(ft, preview = "docx") # can change this to "html" or "pptx"
-
-#see https://davidgohel.github.io/flextable/ for more information and formatting options
