@@ -104,9 +104,9 @@ limpet.density <- left_join(limpet.density, sample.info)
 
 #select desired variables from env
 env2 <- env %>% 
-  select(date, sampleID, season, year, location, 
-         pH, DO, wTemp, light, flow, turb, cond, 
-         mon.precip, mon.ADD, max.discharge) 
+  select(sampleID, 
+         DO, wTemp,  
+         mon.precip, mon.ADD) 
 
 #add env variables to density data
 limpet.df <- left_join(limpet.density, env2) %>% 
@@ -292,52 +292,150 @@ ft
 Use the template code below to calculate the descriptive statistics for your variable of interest. The output of this code should not all be reported in your paper. Decide which (if any) of the descriptive statistics you should report and make sure to round the values. Descriptive statistics can be reported in the text of the results (see this [example results section](https://docs.google.com/document/d/1vwyOSmhZzTuIfAEbpeiv3yCsU1UMZDsTXgnbE80nPTU/edit?usp=sharing)) if relatively simple, or you can make a formatted table of just the necessary, rounded values to include in your paper (in which case you might want to use "formatted_descriptiveStats_table.R" in the "data_description" script templates to help you make a formatted table).
 
 ```{r}
-#| label: descriptive stats
-#| message: false
-#| warning: false
+#| label: formatted descriptive stats density
+#| tbl-cap: Limpet Density Descriptive Statistics
+#| include: true
 
-# the code below will calculate descriptive statistics for a variable of interest grouped by another variable
+#before you run the code below...
 
-density.sum <- limpet.df %>% # put the name of the data frame here
-  filter(!is.na(density)) %>% # remove missing values from the variable of interest
-  group_by(season, location) %>% # put the name of the grouping variable(s) here
-  summarize(mean = mean(density), # put the name of the variable you want to summarize in this & following blanks
-            median = median(density), 
-            SD = sd(density), 
-            IQR = IQR(density), 
-            min = min(density),
-            max = max(density),
+#make sure the 'flextable' and `tidyverse` packages are installed and loaded
+#make sure your data are imported
+
+#see https://davidgohel.github.io/flextable/ for more information and formatting options
+
+#set the variable you want to summarize
+x.var <- "density" #put the name of the column you want to summarize in the blank here
+
+#calculate descriptive stats
+#remove the lines below that you don't need (you won't usually need ALL these values)
+df.sum <- limpet.df %>% #put the name of the data frame here
+  group_by(season, location) %>% #put the grouping variable(s) here
+  summarise(mean = round(mean(.data[[x.var]]), digits=0), #change the digits as needed
+            SD = signif(sd(.data[[x.var]]), digits=2),
+            median = round(median(.data[[x.var]]), digits=2),
+            IQR = round(IQR(.data[[x.var]]), digits=2),
+            min = round(min(.data[[x.var]]), digits=2),
+            max = round(max(.data[[x.var]]), digits=2),
             N = n())
 
-density.sum
+#create the table
+ft <- flextable(df.sum,
+                cwidth=0.75) #can vary cell width as needed
+
+#bold the headings
+ft <- bold(ft, part="header")
+
+#center columns
+ft <- align(ft, align = "center", part = "all" )
+
+#print the table
+#right click on the table, choose select all, 
+#choose copy, then paste in your document
+#finish formatting as needed in your document
+ft
 
 
-DO.sum <- limpet.df %>% # put the name of the data frame here
-  filter(!is.na(DO)) %>% # remove missing values from the variable of interest
-  group_by(season, location) %>% # put the name of the grouping variable(s) here
-  summarize(mean = mean(DO), # put the name of the variable you want to summarize in this & following blanks
-            median = median(DO), 
-            SD = sd(DO), 
-            IQR = IQR(DO), 
-            min = min(DO),
-            max = max(DO),
-            N = n())
-DO.sum
-
-
-wTemp.sum <- limpet.df %>% # put the name of the data frame here
-  filter(!is.na(wTemp)) %>% # remove missing values from the variable of interest
-  group_by(season, location) %>% # put the name of the grouping variable(s) here
-  summarize(mean = mean(wTemp), # put the name of the variable you want to summarize in this & following blanks
-            median = median(wTemp), 
-            SD = sd(wTemp), 
-            IQR = IQR(wTemp), 
-            min = min(wTemp),
-            max = max(wTemp),
-            N = n())
-wTemp.sum
 
 ```
+
+
+```{r}
+#| label: formatted descriptive stats DO
+#| tbl-cap: Dissolved Oxygen Descriptive Statistics
+#| include: true
+
+#before you run the code below...
+
+#make sure the 'flextable' and `tidyverse` packages are installed and loaded
+#make sure your data are imported
+
+#see https://davidgohel.github.io/flextable/ for more information and formatting options
+
+#set the variable you want to summarize
+x.var <- "DO" #put the name of the column you want to summarize in the blank here
+
+#calculate descriptive stats
+#remove the lines below that you don't need (you won't usually need ALL these values)
+df.sum <- limpet.df %>% #put the name of the data frame here
+  group_by(season, location) %>% #put the grouping variable(s) here
+  filter(!is.na(.data[[x.var]])) %>% # remove missing values from the variable of interest
+  summarise(mean = round(mean(.data[[x.var]]), digits=2), #change the digits as needed
+            SD = signif(sd(.data[[x.var]]), digits=2),
+            median = round(median(.data[[x.var]]), digits=2),
+            IQR = round(IQR(.data[[x.var]]), digits=2),
+            min = round(min(.data[[x.var]]), digits=2),
+            max = round(max(.data[[x.var]]), digits=2),
+            N = n())
+
+#create the table
+ft <- flextable(df.sum,
+                cwidth=0.75) #can vary cell width as needed
+
+#bold the headings
+ft <- bold(ft, part="header")
+
+#center columns
+ft <- align(ft, align = "center", part = "all" )
+
+#print the table
+#right click on the table, choose select all, 
+#choose copy, then paste in your document
+#finish formatting as needed in your document
+ft
+
+
+
+```
+
+
+```{r}
+#| label: formatted descriptive stats wTemp
+#| tbl-cap: Water Temperature Descriptive Statistics
+#| include: true
+
+#before you run the code below...
+
+#make sure the 'flextable' and `tidyverse` packages are installed and loaded
+#make sure your data are imported
+
+#see https://davidgohel.github.io/flextable/ for more information and formatting options
+
+#set the variable you want to summarize
+x.var <- "wTemp" #put the name of the column you want to summarize in the blank here
+
+#calculate descriptive stats
+#remove the lines below that you don't need (you won't usually need ALL these values)
+df.sum <- limpet.df %>% #put the name of the data frame here
+  group_by(season, location) %>% #put the grouping variable(s) here
+  filter(!is.na(.data[[x.var]])) %>% # remove missing values from the variable of interest
+  summarise(mean = round(mean(.data[[x.var]]), digits=1), #change the digits as needed
+            SD = signif(sd(.data[[x.var]]), digits=2),
+            median = round(median(.data[[x.var]]), digits=1),
+            IQR = round(IQR(.data[[x.var]]), digits=1),
+            min = round(min(.data[[x.var]]), digits=2),
+            max = round(max(.data[[x.var]]), digits=2),
+            N = n())
+
+#create the table
+ft <- flextable(df.sum,
+                cwidth=0.75) #can vary cell width as needed
+
+#bold the headings
+ft <- bold(ft, part="header")
+
+#center columns
+ft <- align(ft, align = "center", part = "all" )
+
+#print the table
+#right click on the table, choose select all, 
+#choose copy, then paste in your document
+#finish formatting as needed in your document
+ft
+
+
+
+```
+
 
 # Data Visualization
 
