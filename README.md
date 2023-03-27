@@ -2,7 +2,7 @@
 
 ### by Marney Pratt
 
-### Last updated on March 17, 2023
+### Last updated on March 27, 2023
 
 This webpage details how to download this project which includes all the files you need to analyze data for your Freshwater Macroinvertebrate Project for Bio 131.
 
@@ -44,6 +44,6 @@ Use the metadata text files in the "metadata" folder to help you know what is in
 Copy the code from the various script templates in the "script_templates" folder as needed and paste them in the "macro_analysis.qmd" file.  Replace the blanks in the code as needed.
 
 
-When you are done with your analysis "render" your .qmd file. You can render straight to PDF or render to HTML, open the HTML file in your browser, and then "print" to a PDF file.
+When you are done with your analysis "render" your .qmd file. Render to HTML, open the HTML file in your browser, and then "print" to a PDF file.
 
 Insert a file printout of the PDF in the "Project Data Analysis" section of your Lab Notebook.
