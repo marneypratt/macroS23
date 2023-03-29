@@ -40,6 +40,8 @@ Figure out which data file(s) you need to import (see the metadata files for mor
 
 Find the code you need to prepare or "wrangle" your data to make any calculations needed and combine any datasets you need to combine by looking in the "data_wrangling" folder within the "script_templates" folder. Copy and paste the code you need in the chunk below.
 
+Note, once you have completed this code chunk, you should have a new data frame that has ONE value per sampleID. You will then use this new data frame going forward.
+
 ```{r}
 #| label: data wrangling
 
@@ -73,32 +75,10 @@ If you want code to make a formatted table for you, go to the "data_description"
 
 ```
 
-## Weather Table
-
-This is optional, but if you want to have a summary of what the weather was like in the month before sampling, then use the two code chunks below along with the template code from "script_templates" then "data_description" and select the correct version of the "weather_table_.R" script based on which factors you are using and paste that code below. (note that the weather is the same for both locations, so you do not need that factor)
-
-```{r}
-#| label: weather table
-#| tbl-cap: Unformatted Weather Table
-
-
-```
-
-If you want code to make a formatted table for you, go to the "data_description" script templates and select the 'formatted_weather_table_.R' script based on which factors you are using and paste that code below. Remove any factors you did not include. (note that the weather is the same for both locations, so you do not need that factor)
-
-```{r}
-#| label: formatted weather table
-#| tbl-cap: Weather Table
-#| include: true
-
-
-
-
-```
 
 ## Descriptive Statistics
 
-Use the template code below to calculate the descriptive statistics for your variable of interest. The output of this code should not all be reported in your paper. Decide which (if any) of the descriptive statistics you should report and make sure to round the values. Descriptive statistics can be reported in the text of the results (see this [example results section](https://docs.google.com/document/d/1vwyOSmhZzTuIfAEbpeiv3yCsU1UMZDsTXgnbE80nPTU/edit?usp=sharing)) if relatively simple, or you can make a formatted table of just the necessary, rounded values to include in your paper (in which case you might want to use "formatted_descriptiveStats_table.R" in the "data_description" script templates to help you make a formatted table).
+Use the template code below to calculate the descriptive statistics for your variable of interest. The output of this code should NOT all be reported in your paper. Decide which (if any) of the descriptive statistics you should report and make sure to round the values. Descriptive statistics can be reported in the text of the results (see this [example results section](https://docs.google.com/document/d/1vwyOSmhZzTuIfAEbpeiv3yCsU1UMZDsTXgnbE80nPTU/edit?usp=sharing)) if relatively simple, or you can make a formatted table of just the necessary, rounded values to include in your paper (in which case you might want to use "formatted_descriptiveStats_table.R" in the "data_description" script templates to help you make a formatted table).
 
 ```{r}
 #| label: descriptive stats
