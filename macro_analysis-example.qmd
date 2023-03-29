@@ -66,13 +66,15 @@ master.taxa <- read_csv("data/master.taxa.csv",
 
 Find the code you need to prepare or "wrangle" your data to make any calculations needed and combine any datasets you need to combine by looking in the "data_wrangling" folder within the "script_templates" folder. Copy and paste the code you need in the chunk below.
 
+Note, once you have completed this code chunk, you should have a new data frame that has ONE value per sampleID. You will then use this new data frame going forward.
+
 ```{r}
 #| label: data wrangling
 #| message: false
 #| warning: false
 
 #calculate limpet density for each sampleID
-limpet.density <- macros %>% 
+density.df <- macros %>% 
   
   #join taxa info
   left_join(., master.taxa) %>%
@@ -99,7 +101,7 @@ sample.info <- macros %>%
   distinct()
 
 #add sample info back to density data
-limpet.density <- left_join(limpet.density, sample.info)
+density.df <- left_join(density.df, sample.info)
 
 
 #select desired variables from env
@@ -109,7 +111,7 @@ env2 <- env %>%
          mon.precip, mon.ADD) 
 
 #add env variables to density data
-limpet.df <- left_join(limpet.density, env2) %>% 
+density.df <- left_join(density.df, env2) %>% 
   filter(year != "2018")
 
 
@@ -128,7 +130,7 @@ Make a table of the data that you used in your analysis (how many samples and ho
 #| message: false
 #| warning: false
 
-table.sum <- limpet.df %>%  #put the name of your wrangled data here
+table.sum <- density.df %>%  #put the name of your wrangled data here
   
   #summarize by date, season, & location (to get number of microhabs and area sampled per date)
   group_by(date, season, location) %>% 
@@ -227,7 +229,7 @@ This is optional, but if you want to have a summary of what the weather was like
 #before you run this code, make sure your dataframe has all the necessary columns
 #you need season, year, location, mon.ADD, mon.precip
 
-weather.sum <- limpet.df %>%  #put the name of your wrangled data here
+weather.sum <- density.df %>%  #put the name of your wrangled data here
     group_by(season, year) %>% 
   summarize(
     mon.ADD = round(mean(mon.ADD, na.rm=TRUE), digits=0),
@@ -308,7 +310,7 @@ x.var <- "density" #put the name of the column you want to summarize in the blan
 
 #calculate descriptive stats
 #remove the lines below that you don't need (you won't usually need ALL these values)
-df.sum <- limpet.df %>% #put the name of the data frame here
+df.sum <- density.df %>% #put the name of the data frame here
   group_by(season, location) %>% #put the grouping variable(s) here
   summarise(mean = round(mean(.data[[x.var]]), digits=0), #change the digits as needed
             SD = signif(sd(.data[[x.var]]), digits=2),
@@ -356,7 +358,7 @@ x.var <- "DO" #put the name of the column you want to summarize in the blank her
 
 #calculate descriptive stats
 #remove the lines below that you don't need (you won't usually need ALL these values)
-df.sum <- limpet.df %>% #put the name of the data frame here
+df.sum <- density.df %>% #put the name of the data frame here
   group_by(season, location) %>% #put the grouping variable(s) here
   filter(!is.na(.data[[x.var]])) %>% # remove missing values from the variable of interest
   summarise(mean = round(mean(.data[[x.var]]), digits=2), #change the digits as needed
@@ -405,7 +407,7 @@ x.var <- "wTemp" #put the name of the column you want to summarize in the blank 
 
 #calculate descriptive stats
 #remove the lines below that you don't need (you won't usually need ALL these values)
-df.sum <- limpet.df %>% #put the name of the data frame here
+df.sum <- density.df %>% #put the name of the data frame here
   group_by(season, location) %>% #put the grouping variable(s) here
   filter(!is.na(.data[[x.var]])) %>% # remove missing values from the variable of interest
   summarise(mean = round(mean(.data[[x.var]]), digits=1), #change the digits as needed
@@ -448,7 +450,7 @@ Find the code you need to visualize (=graph) your data by looking in the "graphi
 
 # this code will make a scatter plot with each graphed on a log-scale axis
 
-limpet.df %>% 
+density.df %>% 
   filter(!is.na(DO)) %>% 
 
 ggplot(
@@ -456,10 +458,11 @@ ggplot(
   aes(x = DO, y = density+1, color = location)) + 
   geom_point(size = 3) +                   #play with the point attributes as needed
   geom_smooth(method = "lm", se = FALSE) + #adds line of best fit
-  ylab(bquote("Density (number/"~m^2*")")) +
+  ylab(bquote("Limpet Density (number/"~m^2*")")) +
   xlab("Dissolved Oxygen (mg/L)") +
   labs(color = "Location") +
   theme_classic(base_size = 18) +
+  theme(legend.position = "top") +
   scale_y_log10() +     #changes y-axis to log-scale
   annotation_logticks(sides = "l") + # adds log-scale tick marks 
   facet_wrap(vars(season))   
@@ -490,7 +493,7 @@ ggsave(filename="images/limpet.DO.png",  #recommended to use.png or .jpg file ty
 
 # this code will make a scatter plot with each graphed on a log-scale axis
 
-limpet.df %>% 
+density.df %>% 
   filter(!is.na(wTemp)) %>% 
 
 ggplot(
@@ -498,10 +501,11 @@ ggplot(
   aes(x = wTemp, y = density+1, color = location)) + 
   geom_point(size = 3) +                   #play with the point attributes as needed
   geom_smooth(method = "lm", se = FALSE) + #adds line of best fit
-  ylab(bquote("Density (number/"~m^2*")")) +
+  ylab(bquote("Limpet Density (number/"~m^2*")")) +
   xlab("Water Temperature ("~degree~"C)") +
   labs(color = "Location") +
   theme_classic(base_size = 18) +
+  theme(legend.position = "top") +
   scale_y_log10() +     #changes y-axis to log-scale
   annotation_logticks(sides = "l") + # adds log-scale tick marks 
   facet_wrap(vars(season))   
@@ -526,7 +530,7 @@ ggsave(filename="images/limpet.wTemp.png",  #recommended to use.png or .jpg file
 
 #| label: wTemp vs season and location
 
-limpet.df %>% 
+density.df %>% 
   filter(!is.na(wTemp)) %>% 
 
 ggplot(
@@ -566,7 +570,7 @@ ggsave(filename="images/wTemp.season.png",  #recommended to use.png or .jpg file
 #| label: DO vs wTemp graph
 #| message: false
 
-limpet.df %>% 
+density.df %>% 
   filter(!is.na(DO), !is.na(wTemp)) %>% 
 
 ggplot(
@@ -577,7 +581,8 @@ ggplot(
   ylab("Dissolved Oxygen (mg/L)") +
   xlab("Water Temperature ("~degree~"C)") +
   labs(color = "Location") +
-  theme_classic(base_size = 18) 
+  theme_classic(base_size = 18) +
+  theme(legend.position = "top") 
 
 
 ```
