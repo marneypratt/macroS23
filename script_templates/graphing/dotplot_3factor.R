@@ -22,8 +22,8 @@ ggplot(
   ylab("___") +
   xlab("___") +
   coord_cartesian(expand=TRUE) +
-  theme(legend.position = "top") + #change the position of the key as needed
   theme_classic(base_size=16) +
+  theme(legend.position = "top") + #change the position of the key as needed
   facet_wrap(vars(___))   #3rd factor here
 
 

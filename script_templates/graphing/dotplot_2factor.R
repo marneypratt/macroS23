@@ -22,8 +22,8 @@ ggplot(
   ylab("___") +
   xlab("___") +
   coord_cartesian(expand=TRUE) +
-  theme(legend.position = "top") + #change the position of the key as needed
-  theme_classic(base_size=16)  
+  theme_classic(base_size=16)  +
+  theme(legend.position = "top") + #change the position of the key as needed 
 
 
 #see the resources below for some additional options to make a nice plot 
