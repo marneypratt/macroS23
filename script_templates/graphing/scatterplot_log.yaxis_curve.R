@@ -5,8 +5,10 @@
 ggplot(
   data = ___, 
   aes(x = ___, y = ___, color = ___)) + 
-  geom_point(size = 3) +                   #play with the point attributes as needed
-  geom_smooth(method = "lm", se = FALSE, formula = y ~ poly(x, 2)) + #adds polynomial curve of best fit
+  geom_point(size = 3) +              #play with the point attributes as needed
+  geom_smooth(method = "loess",       #adds locally weighted smoothing line
+              se = FALSE, 
+              formula = y ~ x) + 
   ylab("___") +
   xlab("___") +
   labs(color = "___") +
@@ -17,3 +19,6 @@ ggplot(
 #see the resources below for some additional options to make a nice scatter plot 
 # https://www.datanovia.com/en/lessons/ggplot-scatter-plot/
 # https://ggplot2.tidyverse.org/index.html
+
+#see the link below for more on smoothing lines using geom_smooth
+# https://www.sharpsightlabs.com/blog/geom_smooth/ 
