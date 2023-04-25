@@ -1,4 +1,4 @@
-This “macro_metadata” file was most recently updated on 2023-03-19 by Marney Pratt
+This “macros_metadata” file was most recently updated on 2023-03-19 by Marney Pratt
 
 
 -------------------
@@ -8,7 +8,7 @@ GENERAL INFORMATION
 
 1. Title of Dataset 
 
-Mill River Macroinvertebrate Data for 2018-2021
+Mill River Macroinvertebrate Data for 2018-2022
 
 
 2. Author Information
@@ -129,7 +129,7 @@ Smith College students and various volunteers
 
 
 -----------------------------------------
-DATA-SPECIFIC INFORMATION FOR: mill.macro.csv
+DATA-SPECIFIC INFORMATION FOR: macros.csv
 -----------------------------------------
 
 
